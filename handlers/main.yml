@@ -1,0 +1,4 @@
+- name: "Reload consul"
+  command: docker exec consul-client consul reload
+  ignore_errors: True
+  tags: ['consul-service']

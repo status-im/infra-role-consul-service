@@ -1,0 +1,34 @@
+- name: "Create consul directories"
+  file:
+    path: "{{ item }}"
+    owner: consul
+    group: consul
+    mode: 0755
+    state: directory
+  with_items:
+    - "{{ consul_config_path }}"
+  tags: ['consul-service']
+
+- name: "Configure consul"
+  template:
+    dest: "{{ consul_config_path }}/service_{{ consul_service_name }}.json"
+    src: service.json.j2
+    owner: consul
+    group: consul
+    mode: 0644
+  when: consul_service_name is defined
+  notify:
+    - Reload consul
+  tags: ['consul-service', 'files']
+
+- name: "Configure consul"
+  template:
+    dest: "{{ consul_config_path }}/service_{{ item }}.json"
+    src: service.json.j2
+    owner: consul
+    group: consul
+    mode: 0644
+  with_items: "{{ consul_service_names }}"
+  notify:
+    - Reload consul
+  tags: ['consul-service', 'files']
