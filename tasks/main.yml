@@ -1,8 +1,8 @@
 - name: "Create consul directories"
   file:
     path: "{{ item }}"
-    owner: consul
-    group: consul
+    owner: root
+    group: adm
     mode: 0755
     state: directory
   with_items:
@@ -13,8 +13,8 @@
   template:
     dest: "{{ consul_config_path }}/service_{{ consul_service_name }}.json"
     src: service.json.j2
-    owner: consul
-    group: consul
+    owner: root
+    group: adm
     mode: 0644
   when: consul_service_name is defined
   notify:
@@ -25,8 +25,8 @@
   template:
     dest: "{{ consul_config_path }}/service_{{ item }}.json"
     src: service.json.j2
-    owner: consul
-    group: consul
+    owner: root
+    group: adm
     mode: 0644
   with_items: "{{ consul_service_names }}"
   notify:
