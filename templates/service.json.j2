@@ -7,7 +7,7 @@
     {% if consul_service_address is defined -%}
     "address": "{{ consul_service_address }}",
     {% endif -%}
-    "enableTagOverride": true,
+    "enable_tag_override": true,
     {% if consul_service_checks is defined -%}
     "checks": [
       {% for check in consul_service_checks -%}
@@ -15,6 +15,9 @@
         {% if check.type == "http" -%}
         "name": "{{ check.id|default(consul_service_name) }} HTTP check",
         "http": {{ check.http | to_json }},
+        "method": {{ check.method | default("GET") | to_json }},
+        "tls_skip_verify": {{ check.tls_skip_verify | default(false) | to_json }},
+        "header": {{ check.header | default({}) | to_json }},
         {% elif check.type == "tcp" -%}
         "name": "{{ check.id|default(consul_service_name) }} TCP check",
         {% if check.tcp is defined -%}
@@ -22,7 +25,7 @@
         {% endif -%}
         {% elif check.type == "script" -%}
         "name": "{{ check.id|default(consul_service_name) }} Script check",
-        "script": {{ check.script | to_json }},
+        "args": {{ check.script.split(" ") | to_json }},
         {% elif check.type == "ttl" -%}
         "name": "{{ check.id|default(consul_service_name) }} TTL check",
         "ttl": {{ check.ttl | to_json }},
