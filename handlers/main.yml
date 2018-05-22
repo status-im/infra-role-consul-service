@@ -1,7 +1,6 @@
 ---
 # Since sometimes we run client and sometimes server we need to check
 - name: "Reload consul"
-  command: |
-    docker exec $(sudo docker ps --format '{{.Names}}' | grep consul) consul reload
+  command: docker exec $(sudo docker ps --format '\{\{.Names\}\}' | grep consul) consul reload
   ignore_errors: True
   tags: ['consul-service']
