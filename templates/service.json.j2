@@ -1,52 +1,60 @@
 {
-  "service": {
-    "name": "{{ consul_service_name }}",
-    {% if consul_service_port is defined -%}
-    "port": {{ consul_service_port }},
-    {% endif -%}
-    {% if consul_service_address is defined -%}
-    "address": "{{ consul_service_address }}",
-    {% endif -%}
-    "enable_tag_override": true,
-    {% if consul_service_checks is defined -%}
-    "checks": [
-      {% for check in consul_service_checks -%}
-      {
-        {% if check.type == "http" -%}
-        "name": "{{ check.id|default(consul_service_name) }} HTTP check",
-        "http": {{ check.http | to_json }},
-        "method": {{ check.method | default("GET") | to_json }},
-        "tls_skip_verify": {{ check.tls_skip_verify | default(false) | to_json }},
-        "header": {{ check.header | default({}) | to_json }},
-        {% elif check.type == "tcp" -%}
-        "name": "{{ check.id|default(consul_service_name) }} TCP check",
-        {% if check.tcp is defined -%}
-        "tcp": {{ check.tcp | to_json }},
-        {% endif -%}
-        {% elif check.type == "script" -%}
-        "name": "{{ check.id|default(consul_service_name) }} Script check",
-        "args": {{ check.script.split(" ") | to_json }},
-        {% elif check.type == "ttl" -%}
-        "name": "{{ check.id|default(consul_service_name) }} TTL check",
-        "ttl": {{ check.ttl | to_json }},
-        {% elif check.type == "docker" -%}
-        "name": "{{ check.id|default(consul_service_name) }} Docker check",
-        "docker_container_id": {{ check.docker_container_id | to_json }},
-        "shell": {{ check.shell | to_json }},
-        "script": {{ check.script | to_json }},
-        {% endif -%}
-        {% if check.deregister_critical_service_after is defined -%}
-        "deregister_critical_service_after": {{ check.deregister_critical_service_after | to_json }},
-        {% endif -%}
-        {% if check.type != "ttl" -%}
-        "interval": {{ check.interval|default("10s") | to_json }},
-        "timeout": {{ check.timeout|default("1s") | to_json }},
-        {% endif -%}
-        "id": "{{ check.id|default(consul_service_name) }}"
-      }
-      {% endfor -%}
-    ],
-    {% endif -%}
-    "tags": {{ consul_service_tags|to_json }}
-  }
+  "services": [
+    {% for service in consul_services -%}
+    {
+      "id": "{{ service.id }}",
+      "name": "{{ service.name }}",
+      {% if service.port is defined -%}
+      "port": {{ service.port }},
+      {% endif -%}
+      {% if service.meta is defined -%}
+      "meta": {{ service.meta | to_json }},
+      {% endif -%}
+      {% if service.address is defined -%}
+      "address": "{{ service.address }}",
+      {% endif -%}
+      "enable_tag_override": true,
+      {% if service.checks is defined -%}
+      "checks": [
+        {% for check in service.checks -%}
+        {
+          {% if check.type == "http" -%}
+          "name": "{{ check.id|default(service.name) }} HTTP check",
+          "http": {{ check.http | to_json }},
+          "method": {{ check.method | default("GET") | to_json }},
+          "tls_skip_verify": {{ check.tls_skip_verify | default(false) | to_json }},
+          "header": {{ check.header | default({}) | to_json }},
+          {% elif check.type == "tcp" -%}
+          "name": "{{ check.id|default(service.name) }} TCP check",
+          {% if check.tcp is defined -%}
+          "tcp": {{ check.tcp | to_json }},
+          {% endif -%}
+          {% elif check.type == "script" -%}
+          "name": "{{ check.id|default(service.name) }} Script check",
+          "args": {{ check.script.split(" ") | to_json }},
+          {% elif check.type == "ttl" -%}
+          "name": "{{ check.id|default(service.name) }} TTL check",
+          "ttl": {{ check.ttl | to_json }},
+          {% elif check.type == "docker" -%}
+          "name": "{{ check.id|default(service.name) }} Docker check",
+          "docker_container_id": {{ check.docker_container_id | to_json }},
+          "shell": {{ check.shell | to_json }},
+          "script": {{ check.script | to_json }},
+          {% endif -%}
+          {% if check.deregister_critical_service_after is defined -%}
+          "deregister_critical_service_after": {{ check.deregister_critical_service_after | to_json }},
+          {% endif -%}
+          {% if check.type != "ttl" -%}
+          "interval": {{ check.interval|default("10s") | to_json }},
+          "timeout": {{ check.timeout|default("1s") | to_json }},
+          {% endif -%}
+          "id": "{{ check.id|default(service.name) }}"
+        }
+        {% endfor -%}
+      ],
+      {% endif -%}
+      "tags": {{ service.tags|to_json }}
+    }
+    {% endfor -%}
+  ]
 }
