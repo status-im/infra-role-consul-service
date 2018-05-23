@@ -2,7 +2,7 @@
   "services": [
     {% for service in consul_services -%}
     {
-      "id": "{{ service.id }}",
+      "id": "{{ service.id | default(service.name+'-'+loop.index0|string) }}",
       "name": "{{ service.name }}",
       {% if service.port is defined -%}
       "port": {{ service.port }},
