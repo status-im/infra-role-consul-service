@@ -8,7 +8,7 @@
       "port": {{ service.port }},
       {% endif -%}
       {% if service.meta is defined -%}
-      "meta": {{ service.meta | to_json }},
+      "meta": {{ service.meta | to_nice_json(indent=8) }},
       {% endif -%}
       {% if service.address is defined -%}
       "address": "{{ service.address }}",
