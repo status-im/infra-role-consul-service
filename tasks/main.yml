@@ -12,11 +12,11 @@
 
 - name: "Configure consul"
   template:
-    dest: "{{ consul_config_path }}/service_{{ consul_service_name }}.json"
+    dest: "{{ consul_config_path }}/service_{{ consul_config_name }}.json"
     src: service.json.j2
     owner: root
     group: adm
     mode: 0644
-  when: consul_service_name is defined
+  when: consul_config_name is defined
   notify: "Reload consul"
   tags: ['consul-service', 'files']
