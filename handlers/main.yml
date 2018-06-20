@@ -2,6 +2,6 @@
 # Since sometimes we run client and sometimes server we need to check
 - name: "Reload consul"
   shell: |
-    docker exec $(docker ps --format {%raw%}'{{.Names}}'{%endraw%} --filter='name=consul') consul reload
+    docker exec consul-$([[ $(hostname) =~ consul ]] && echo 'server' || echo 'client') consul reload
   ignore_errors: True
   tags: ['consul-service']
