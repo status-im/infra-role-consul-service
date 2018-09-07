@@ -54,7 +54,7 @@
       ],
       {% endif -%}
       "tags": {{ service.tags|to_json }}
-    }
+    }{{ "," if not loop.last }}
     {% endfor -%}
   ]
 }
