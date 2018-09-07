@@ -49,12 +49,12 @@
           "timeout": {{ check.timeout|default("1s") | to_json }},
           {% endif -%}
           "id": "{{ check.id|default(service.name) }}"
-        }{{ "," if not loop.last }}
+        }{{ "," if not loop.last else "" }}
         {% endfor -%}
       ],
       {% endif -%}
       "tags": {{ service.tags|to_json }}
-    }{{ "," if not loop.last }}
+    }{{ "," if not loop.last else "" }}
     {% endfor -%}
   ]
 }
