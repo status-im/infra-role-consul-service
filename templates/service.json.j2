@@ -45,8 +45,8 @@
           "deregister_critical_service_after": {{ check.deregister_critical_service_after | to_json }},
           {% endif -%}
           {% if check.type != "ttl" -%}
-          "interval": {{ check.interval|default("10s") | to_json }},
-          "timeout": {{ check.timeout|default("1s") | to_json }},
+          "interval": {{ check.interval|default("30s") | to_json }},
+          "timeout": {{ check.timeout|default("2s") | to_json }},
           {% endif -%}
           "id": "{{ check.id|default(service.name) }}"
         }{{ "," if not loop.last else "" }}
