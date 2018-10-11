@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  author: Emilien Kenler <emilien@kkvesper.jp>
+  author: Jakub Sokolowski <jakub@status.im>
   description: Create the configuration file for a consul service
-  company: KK Vesper
+  company: Status.im
   license: MIT
   min_ansible_version: 1.9
   platforms:
