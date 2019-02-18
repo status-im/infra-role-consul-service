@@ -13,6 +13,10 @@
       {% if service.address is defined -%}
       "address": "{{ service.address }}",
       {% endif -%}
+      "weights": {
+        "passing": {{ service.weights_passing|default(1) }},
+        "warning": {{ service.weights_warning|default(3) }} 
+      },
       "enable_tag_override": true,
       {% if service.checks is defined -%}
       "checks": [
