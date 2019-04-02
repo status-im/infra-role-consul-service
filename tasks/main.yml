@@ -8,7 +8,6 @@
     state: directory
   loop_control:
     loop_var: file_path
-  tags: ['consul-service']
 
 - name: 'Configure consul'
   template:
@@ -19,7 +18,6 @@
     mode: 0644
   when: consul_config_name is defined
   notify: 'Reload consul'
-  tags: ['consul-service', 'files']
 
 - name: 'Check JSON config syntax'
   shell: 'cat "{{ consul_config_path }}/service_{{ consul_config_name | replace("-", "_") }}.json" | jq .'
