@@ -1,13 +1,13 @@
 ---
 - name: 'Create consul directories'
   file:
-    path: '{{ item }}'
+    path: '{{ consul_config_path }}'
     owner: root
     group: adm
     mode: 0755
     state: directory
-  with_items:
-    - '{{ consul_config_path }}'
+  loop_control:
+    loop_var: file_path
   tags: ['consul-service']
 
 - name: 'Configure consul'
