@@ -52,7 +52,7 @@
           "interval": {{ check.interval|default("30s") | to_json }},
           "timeout": {{ check.timeout|default("2s") | to_json }},
           {% endif -%}
-          "id": "{{ check.id|default(service.name) }}"
+          "id": "{{ check.id|default(service.id) }}"
         }{{ "," if not loop.last else "" }}
         {% endfor -%}
       ],
