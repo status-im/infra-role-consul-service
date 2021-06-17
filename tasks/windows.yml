@@ -1,0 +1,20 @@
+---
+- name: 'Create consul directory'
+  win_file:
+    path: 'C:/consul/config'
+    state: directory
+
+- name: 'Generate service config'
+  win_template:
+    dest: 'C:/consul/config/{{ consul_config_file }}'
+    src: 'service.json.j2'
+  register: consul_config
+
+- name: 'Validate JSON syntax'
+  win_shell: 'jq . "C:/consul/config/{{ consul_config_file }}"'
+  changed_when: false
+
+- name: Reload consul
+  win_command: 'C:/consul/consul.exe reload'
+  when: consul_config.changed
+  changed_when: false

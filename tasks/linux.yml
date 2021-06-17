@@ -1,0 +1,26 @@
+---
+- name: 'Create consul directory'
+  file:
+    path: '/etc/consul'
+    owner: root
+    group: adm
+    mode: 0755
+    state: directory
+
+- name: 'Generate service config'
+  template:
+    dest: '/etc/consul/{{ consul_config_file }}'
+    src: 'service.json.j2'
+    owner: root
+    group: adm
+    mode: 0644
+  register: consul_config
+
+- name: 'Validate JSON syntax'
+  command: 'jq . "/etc/consul/{{ consul_config_file }}"'
+  changed_when: false
+
+- name: Reload consul
+  command: 'consul reload'
+  when: consul_config.changed
+  changed_when: false

@@ -1,22 +1,5 @@
 ---
-- name: 'Create consul directory'
-  file:
-    path: '{{ consul_config_path }}'
-    owner: root
-    group: adm
-    mode: 0755
-    state: directory
-
-- name: 'Generate service config'
-  template:
-    dest: '{{ consul_config_file }}'
-    src: service.json.j2
-    owner: root
-    group: adm
-    mode: 0644
-  when: consul_config_name is defined
-  notify: 'Reload consul'
-
-- name: 'Validate JSON syntax'
-  shell: 'jq . "{{ consul_config_file }}"'
-  changed_when: false
+- include_tasks: linux.yml
+  when: ansible_system == "Linux"
+- include_tasks: windows.yml
+  when: ansible_system == "Win32NT"

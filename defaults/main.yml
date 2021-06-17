@@ -1,8 +1,6 @@
 ---
-consul_config_path: '/etc/consul'
-consul_config_name: 'default'
-consul_config_filename: 'service_{{ consul_config_name | replace("-", "_") }}.json'
-consul_config_file: '{{ consul_config_path }}/{{ consul_config_filename }}'
+#consul_config_name: 'default'
+consul_config_file: 'service_{{ consul_config_name | mandatory | replace("-", "_") }}.json'
 consul_services: []
 #  - id: 'my-service-1'
 #    name: 'my-service'
