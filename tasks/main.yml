@@ -1,17 +1,15 @@
 ---
-- name: 'Create consul directories'
+- name: 'Create consul directory'
   file:
     path: '{{ consul_config_path }}'
     owner: root
     group: adm
     mode: 0755
     state: directory
-  loop_control:
-    loop_var: file_path
 
-- name: 'Configure consul'
+- name: 'Generate service config'
   template:
-    dest: '{{ consul_config_path }}/service_{{ consul_config_name | replace("-", "_") }}.json'
+    dest: '{{ consul_config_file }}'
     src: service.json.j2
     owner: root
     group: adm
@@ -19,5 +17,6 @@
   when: consul_config_name is defined
   notify: 'Reload consul'
 
-- name: 'Check JSON config syntax'
-  shell: 'cat "{{ consul_config_path }}/service_{{ consul_config_name | replace("-", "_") }}.json" | jq .'
+- name: 'Validate JSON syntax'
+  shell: 'jq . "{{ consul_config_file }}"'
+  changed_when: false

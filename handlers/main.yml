@@ -1,5 +1,4 @@
 ---
-# Since sometimes we run client and sometimes server we need to check
 - name: Reload consul
   command: 'consul reload'
   ignore_errors: True

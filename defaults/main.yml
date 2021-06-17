@@ -1,3 +1,17 @@
-consul_config_path: /etc/consul
-consul_config_name: default
+---
+consul_config_path: '/etc/consul'
+consul_config_name: 'default'
+consul_config_filename: 'service_{{ consul_config_name | replace("-", "_") }}.json'
+consul_config_file: '{{ consul_config_path }}/{{ consul_config_filename }}'
 consul_services: []
+#  - id: 'my-service-1'
+#    name: 'my-service'
+#    port: 4321
+#    address: '10.10.1.1'
+#    tags: ['my', 'service']
+#    meta:
+#      owner: 'me'
+#    checks:
+#      - name: 'my-service-check'
+#        type: 'http'
+#        http: 'http://localhost:4321/health'
