@@ -1,5 +1,3 @@
 ---
-- include_tasks: linux.yml
-  when: ansible_system == "Linux"
-- include_tasks: windows.yml
-  when: ansible_system == "Win32NT"
+# Supports: linux, darwin, win32nt
+- include_tasks: '{{ ansible_system | lower }}.yml'

@@ -1,6 +1,6 @@
 ---
 #consul_config_name: 'default'
-consul_config_file: 'service_{{ consul_config_name | mandatory | replace("-", "_") }}.json'
+consul_config_file: 'service_{{ consul_config_name | mandatory | regex_replace("[.,-/]", "_") }}.json'
 consul_services: []
 #  - id: 'my-service-1'
 #    name: 'my-service'
