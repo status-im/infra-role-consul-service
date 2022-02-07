@@ -11,6 +11,7 @@
   template:
     dest: '/etc/consul/{{ consul_config_file }}'
     src: 'service.json.j2'
+    trim_blocks: false
     owner: root
     group: adm
     mode: 0644
