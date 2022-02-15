@@ -16,6 +16,7 @@
   changed_when: false
 
 - name: Reload consul
-  win_command: 'C:/consul/consul.exe reload'
+  win_service:
+    name: 'consul'
+    state: 'restarted'
   when: consul_config.changed
-  changed_when: false

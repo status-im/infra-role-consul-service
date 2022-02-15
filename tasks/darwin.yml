@@ -23,6 +23,7 @@
   changed_when: false
 
 - name: Reload consul
-  command: '/usr/local/bin/consul reload'
+  community.general.launchd:
+    name: 'consul'
+    state: 'restarted'
   when: consul_config.changed
-  changed_when: false

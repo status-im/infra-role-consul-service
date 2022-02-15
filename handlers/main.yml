@@ -1,5 +1,0 @@
----
-- name: Reload consul
-  command: 'consul reload'
-  ignore_errors: True
-  tags: ['consul-service']
