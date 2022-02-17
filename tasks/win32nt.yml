@@ -15,7 +15,7 @@
   win_shell: 'jq . "C:/consul/config/{{ consul_config_file }}"'
   changed_when: false
 
-- name: Reload consul
+- name: Restart consul
   win_service:
     name: 'consul'
     state: 'restarted'
