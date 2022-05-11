@@ -28,9 +28,9 @@
           "name": "{{ check.id | default(service.name) }} HTTP check",
           "http": {{ check.http | to_json }},
           "method": {{ check.method | default("GET") | to_json }},
-         {%- if check.method == "POST" %}
+        {%- if check.method == "POST" %}
           "body": {{ check.body | default({}) | to_json }},
-         {%- endif %}
+        {%- endif %}
           "tls_skip_verify": {{ check.tls_skip_verify | default(false) | to_json }},
           "header": {{ check.header | default({}) | to_json }},
       {%- elif check.type == "tcp" %}
