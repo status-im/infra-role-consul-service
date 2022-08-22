@@ -1,11 +1,10 @@
 ---
 - name: 'Create consul directory'
   file:
-    path: '/etc/consul'
-    owner: root
-    group: adm
-    mode: 0755
-    state: directory
+    path:  '/etc/consul'
+    group: 'consul'
+    state: 'directory'
+    mode:  0755
 
 - name: 'Generate service config'
   template:
