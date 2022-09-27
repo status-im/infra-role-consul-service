@@ -26,6 +26,7 @@ Create the configuration file for a [Consul](https://www.consul.io/) service def
             success_before_passing: 0
             failures_before_warning: 2
             failures_before_critical: 3
+            disabled: false
 ```
 
 ## Checks
@@ -72,4 +73,5 @@ The following variables are also available:
 
 * `interval` - The interval between each check (N/A for TTL).
 * `timeout` - How much time the check has to answer (N/A for TTL).
+* `disabled` - Do not invlude this check in the service definition.
 * `deregister_critical_service_after` - Deregister service after it has been marked as critical for the given amount of time.
