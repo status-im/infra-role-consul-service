@@ -16,6 +16,7 @@ Create the configuration file for a [Consul](https://www.consul.io/) service def
         tags: ['abc', 'app']
         address: '12.34.56.78'
         port: 1234
+        disabled: false
         checks:
           - id: 'app-abc-status'
             name: 'ABC Healthcheck'
@@ -59,6 +60,7 @@ checks:
     type: ttl
     # required, takes a human duration
     ttl: '5m'
+    disabled: true
 
   - id: 'web-docker-check'
     name: 'Does a docker exec in a container and checks the exit code'

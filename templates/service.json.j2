@@ -1,72 +1,75 @@
 {
   "services": [
+{%- set enabled_services_count = consul_services | map(attribute="disabled", default=false) | reject() | length -%}
 {%- for service in consul_services %}
+  {%- if not service.get("disabled", false) %}
     {
       "id": "{{ service.id | default(service.name+'-'+loop.index0 | string) }}",
       "name": "{{ service.name }}",
       "tags": {{ service.tags | to_json }},
-  {%- if service.port is defined %}
+    {%- if service.port is defined %}
       "port": {{ service.port }},
-  {%- endif %}
-  {%- if service.meta is defined %}
+    {%- endif %}
+    {%- if service.meta is defined %}
       "meta": {{ service.meta | to_nice_json(indent=2) | indent(6, first=False) }},
-  {%- endif %}
-  {%- if service.address is defined %}
+    {%- endif %}
+    {%- if service.address is defined %}
       "address": "{{ service.address }}",
-  {%- endif %}
+    {%- endif %}
       "weights": {
         "passing": {{ service.weights_passing | default(1) }},
         "warning": {{ service.weights_warning | default(3) }}
       },
       "enable_tag_override": true,
-  {%- if service.checks is defined %}
+    {%- if service.checks is defined %}
       "checks": [
-    {%- set enabled_checks_count = service.checks | map(attribute="disabled", default=false) | reject() | length -%}
-    {%- for check in service.checks %}
-      {%- if not check.get("disabled", false) %}
+      {%- set enabled_checks_count = service.checks | map(attribute="disabled", default=false) | reject() | length -%}
+      {%- for check in service.checks %}
+        {%- if not check.get("disabled", false) %}
         {
           "id": "{{ check.id | default(service.id) }}",
-        {%- if check.type == "http" %}
+          {%- if check.type == "http" %}
           "name": "{{ check.id | default(service.name) }} HTTP check",
           "http": {{ check.http | to_json }},
           "method": {{ check.method | default("GET") | to_json }},
           "tls_skip_verify": {{ check.tls_skip_verify | default(false) | to_json }},
           "header": {{ check.header | default({}) | to_json }},
-        {%- elif check.type == "tcp" %}
+          {%- elif check.type == "tcp" %}
           "name": "{{ check.id | default(service.name) }} TCP check",
-        {%- if check.tcp is defined %}
+          {%- if check.tcp is defined %}
           "tcp": {{ check.tcp | to_json }},
-        {%- endif %}
-        {%- elif check.type == "script" %}
+          {%- endif %}
+          {%- elif check.type == "script" %}
           "name": "{{ check.id | default(service.name) }} Script check",
           "args": {{ check.script.split(" ") | to_json }},
-        {%- elif check.type == "ttl" %}
+          {%- elif check.type == "ttl" %}
           "name": "{{ check.id | default(service.name) }} TTL check",
           "ttl": {{ check.ttl | to_json }},
-        {%- elif check.type == "docker" %}
+          {%- elif check.type == "docker" %}
           "name": "{{ check.id | default(service.name) }} Docker check",
           "docker_container_id": {{ check.docker_container_id | to_json }},
           "shell": {{ check.shell | to_json }},
           "script": {{ check.script | to_json }},
-        {%- endif %}
-        {%- if check.deregister_critical_service_after is defined %}
+          {%- endif %}
+          {%- if check.deregister_critical_service_after is defined %}
           "deregister_critical_service_after": {{ check.deregister_critical_service_after | to_json }},
-        {%- endif %}
-        {%- if check.type != "ttl" %}
+          {%- endif %}
+          {%- if check.type != "ttl" %}
           "interval": {{ check.interval | default("30s") | to_json }},
           "timeout": {{ check.timeout | default("2s") | to_json }},
-        {%- endif %}
+          {%- endif %}
           "success_before_passing": {{ check.success_before_passing | default(consul_default_success_before_passing) }},
           "failures_before_warning": {{ check.failures_before_warning | default(consul_default_failures_before_warning) }},
           "failures_before_critical": {{ check.failures_before_critical | default(consul_default_failures_before_critical) }}
         }{{ "," if loop.index < enabled_checks_count else "" }}
-      {%- endif %}
-    {%- endfor %}
+        {%- endif %}
+      {%- endfor %}
       ]
-  {%- else %}
+    {%- else %}
     "checks": []
+    {%- endif %}
+    }{{ "," if loop.index < enabled_services_count else "" }}
   {%- endif %}
-    }{{ "," if not loop.last else "" }}
 {%- endfor %}
   ]
 }

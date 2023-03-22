@@ -9,6 +9,7 @@ consul_default_failures_before_critical: 2
 consul_services: []
 #  - id: 'my-service-1'
 #    name: 'my-service'
+#    disabled: false
 #    port: 4321
 #    address: '10.10.1.1'
 #    tags: ['my', 'service']
