@@ -2,6 +2,9 @@
 #consul_config_name: 'default'
 consul_config_file: 'service_{{ consul_config_name | mandatory | regex_replace("[:.,-/]", "_") }}.json'
 # Default thresholds for triggering alerts and recovery.
+consul_default_check_disabled: false
+consul_default_check_interval: '30s'
+consul_default_check_timeout: '2s'
 consul_default_success_before_passing: 0
 consul_default_failures_before_warning: 1
 consul_default_failures_before_critical: 2

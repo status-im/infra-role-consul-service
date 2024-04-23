@@ -2,7 +2,7 @@
   "services": [
 {%- set enabled_services_count = consul_services | map(attribute="disabled", default=false) | reject() | length -%}
 {%- for service in consul_services %}
-  {%- if not service.get("disabled", false) %}
+  {%- if not service.get("disabled", consul_default_check_disabled) %}
     {
       "id": "{{ service.id | default(service.name+'-'+loop.index0 | string) }}",
       "name": "{{ service.name }}",
@@ -55,8 +55,8 @@
           "deregister_critical_service_after": {{ check.deregister_critical_service_after | to_json }},
           {%- endif %}
           {%- if check.type != "ttl" %}
-          "interval": {{ check.interval | default("30s") | to_json }},
-          "timeout": {{ check.timeout | default("2s") | to_json }},
+          "interval": {{ check.interval | default(consul_default_check_interval) | to_json }},
+          "timeout": {{ check.timeout   | default(consul_default_check_timeout)  | to_json }},
           {%- endif %}
           "success_before_passing": {{ check.success_before_passing | default(consul_default_success_before_passing) }},
           "failures_before_warning": {{ check.failures_before_warning | default(consul_default_failures_before_warning) }},
