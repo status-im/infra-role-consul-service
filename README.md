@@ -77,3 +77,4 @@ The following variables are also available:
 * `timeout` - How much time the check has to answer (N/A for TTL).
 * `disabled` - Do not invlude this check in the service definition.
 * `deregister_critical_service_after` - Deregister service after it has been marked as critical for the given amount of time.
+* `body` - For HTTP checks. If `method` is set to `POST` this value will be send as a body in POST request.
