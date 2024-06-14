@@ -2,7 +2,7 @@
   "services": [
 {%- set enabled_services_count = consul_services | map(attribute="disabled", default=false) | reject() | length -%}
 {%- for service in consul_services %}
-  {%- if not service.get("disabled", consul_default_check_disabled) %}
+  {%- if not service.get("disabled", consul_default_service_disabled) %}
     {
       "id": "{{ service.id | default(service.name+'-'+loop.index0 | string) }}",
       "name": "{{ service.name }}",
@@ -25,7 +25,7 @@
       "checks": [
       {%- set enabled_checks_count = service.checks | map(attribute="disabled", default=false) | reject() | length -%}
       {%- for check in service.checks %}
-        {%- if not check.get("disabled", false) %}
+        {%- if not check.get("disabled", consul_default_check_disabled) %}
         {
           "id": "{{ check.id | default(service.id) }}",
           {%- if check.type == "http" %}
