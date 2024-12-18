@@ -1,0 +1,16 @@
+{
+  "watches": [
+    {%- set enabled_watches_count = consul_watches | map(attribute="disabled", default=false) | reject() | length -%}
+    {%- for watch in consul_watches %}
+      {%- if not watch.get("disabled", consul_default_watch_disabled) %}
+        {
+          "type": "{{ watch.type }}",
+          "handler": "{{ watch.handler }}"{% if watch.service_id is defined %}
+            ,
+            "service_id": "{{ watch.service_id }}"
+          {% endif %}
+        }{{ "," if loop.index < enabled_watches_count else "" }}
+      {%- endif %}
+    {%- endfor %}
+  ]
+}

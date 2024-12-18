@@ -16,6 +16,16 @@
     mode: 0640
   register: consul_config
 
+- name: 'Generate watch config'
+  template:
+    dest: '/etc/consul/{{ consul_config_file }}'
+    src: 'watch.json.j2'
+    trim_blocks: false
+    owner: 'root'
+    group: 'consul'
+    mode: 0640
+  register: consul_config
+
 - name: 'Validate JSON syntax'
   command: 'jq . "/etc/consul/{{ consul_config_file }}"'
   changed_when: false
