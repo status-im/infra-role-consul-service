@@ -29,7 +29,7 @@
         {
           "id": "{{ check.id | default(service.id) }}",
           {%- if check.type == "http" %}
-          "name": "{{ check.id | default(service.name) }} HTTP check",
+          "name": "{{ check.name | default(service.name) }} HTTP check",
           "http": {{ check.http | to_json }},
           "method": {{ check.method | default("GET") | to_json }},
           "tls_skip_verify": {{ check.tls_skip_verify | default(false) | to_json }},
