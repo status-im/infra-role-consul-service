@@ -67,8 +67,7 @@ checks:
     type: docker
     # required, the ID of the container to run the check in
     docker_container_id: '1d88ad189f4'
-    shell: '/bin/bash'
-    script: '/app/local-check.py'
+    args: ['/bin/bash', '-c', '/app/local-check.py']
 ```
 
 The following variables are also available:

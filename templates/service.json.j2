@@ -48,8 +48,7 @@
           {%- elif check.type == "docker" %}
           "name": "{{ check.id | default(service.name) }} Docker check",
           "docker_container_id": {{ check.docker_container_id | to_json }},
-          "shell": {{ check.shell | to_json }},
-          "script": {{ check.script | to_json }},
+          "args":  {{ check.args | to_json }},
           {%- endif %}
           {%- if check.deregister_critical_service_after is defined %}
           "deregister_critical_service_after": {{ check.deregister_critical_service_after | to_json }},
