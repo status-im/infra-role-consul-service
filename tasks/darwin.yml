@@ -19,7 +19,7 @@
 - name: 'Validate JSON syntax'
   command: 'jq . "/etc/consul/{{ consul_config_file }}"'
   environment:
-    PATH: '/opt/homebrew/bin:/usr/local/bin'
+    PATH: '/run/current-system/sw/bin:/opt/homebrew/bin:/usr/local/bin'
   changed_when: false
 
 - name: Restart consul
