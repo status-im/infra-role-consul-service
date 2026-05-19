@@ -7,13 +7,13 @@
       "id": "{{ service.id | default(service.name+'-'+loop.index0 | string) }}",
       "name": "{{ service.name }}",
       "tags": {{ service.tags | to_json }},
-    {%- if service.port is defined %}
+    {%- if service.port is defined and service.port != omit %}
       "port": {{ service.port }},
     {%- endif %}
-    {%- if service.meta is defined %}
+    {%- if service.meta is defined and service.meta != omit %}
       "meta": {{ service.meta | to_nice_json(indent=2) | indent(6, first=False) }},
     {%- endif %}
-    {%- if service.address is defined %}
+    {%- if service.address is defined and service.address != omit %}
       "address": "{{ service.address }}",
     {%- endif %}
       "weights": {
@@ -21,7 +21,7 @@
         "warning": {{ service.weights_warning | default(3) }}
       },
       "enable_tag_override": true,
-    {%- if service.checks is defined %}
+    {%- if service.checks is defined and service.checks != omit %}
       "checks": [
       {%- set enabled_checks_count = service.checks | map(attribute="disabled", default=false) | reject() | length -%}
       {%- for check in service.checks %}
